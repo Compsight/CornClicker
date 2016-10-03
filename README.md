@@ -13,8 +13,9 @@ As a user, …
 - [ ] i can reset my points
 
 WHAT TOOLS?
-- vanilla HTML
-- vanilla CSS
+- HTML
+- CSS
+- BootStrap
 - JavaScript (ES6)
 - Babel (for transpiling ES6) <-
 - Mocha + Chai (for tests) <-
