@@ -7,7 +7,6 @@ As a user, …
 - [ ] my points accumulate and are saved
 - [ ] i can use use points to “level up”
 - [ ] i can use 100 points to buy something to double the kernel output (one click = two popcorns)
-- [ ] (we can add more leveling up mechanics later)
 - [ ] i can save my game (points are saved)
 - [ ] when i revisit the page in my browser, my points and levels are reloaded from the last point in the game
 - [ ] i can reset my points
