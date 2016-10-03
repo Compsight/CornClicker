@@ -1,0 +1,17 @@
+#left-column{
+border: 5px red;
+float: left;
+width: 33%;
+}
+
+#middle-column{
+border: 5px blue;
+width: 33%;
+float: left;
+}
+
+#right-column{
+border: 5px yellow;
+float: left;
+width: 33%;
+}
