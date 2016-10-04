@@ -1,17 +1,47 @@
 #left-column{
-border: 5px red;
+border: 5px red solid;
+border-right: 10px black solid;
 float: left;
-width: 33%;
+height: 500px;
+width: 20%;
 }
 
 #middle-column{
+display: flex;
+flex-direction: column;
+align-items: center;
 border: 5px blue;
-width: 33%;
+width: 60%;
 float: left;
+overflow-x: scroll;
+justify-content: center;
 }
 
 #right-column{
-border: 5px yellow;
+border: 5px yellow solid;
+border-left: 10px black solid;
 float: left;
-width: 33%;
+height: 500px;
+width: 20%;
+}
+
+#teenagers{
+}
+
+.img-fluid{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#popcornkernel{
+align-items: center;
+flex-direction: column;
+align-items: center;
+}
+.store-button{
+}
+
+@media (min-width: 992px){
+
 }
