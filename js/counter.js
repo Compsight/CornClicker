@@ -4,6 +4,11 @@ var PLAYER = {
 
 function earnPoints() {
   PLAYER.points += 1
+  updateUI()
+}
+
+function updateUI() {
+  $('#points').text(PLAYER.points)
 }
 
 $(document).ready(function() {
