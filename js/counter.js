@@ -1,8 +1,31 @@
-var PLAYER = {
-  points: 0,
-  teenagers: 0,
-  kettles: 0,
-  theaters: 0
+var PLAYER;
+
+function startGame() {
+  loadPlayer()
+  updateAllUIs()
+}
+
+function loadPlayer() {
+  const player = Cookies.get('player');
+
+  if (typeof player === 'undefined') {
+    PLAYER = newPlayer()
+  } else {
+    PLAYER = parsePlayer(player)
+  }
+}
+
+function parsePlayer(playerJSON) {
+  return JSON.parse(playerJSON)
+}
+
+function newPlayer() {
+  return {
+    points: 0,
+    teenagers: 0,
+    kettles: 0,
+    theaters: 0
+  }
 }
 
 function savePlayer() {
@@ -58,6 +81,12 @@ function buyTheaters(num) {
   return theaterIncrease
 }
 
+function updateAllUIs() {
+  updateUI()
+  updateTeenagerDorm()
+  updateKettleStorage()
+  updateTheaterLocations()
+}
 
 function updateUI() {
   $('#points').text(PLAYER.points)
@@ -80,6 +109,8 @@ function storePrices(){
 }
 
 $(document).ready(function() {
+  startGame()
+
   $('#popcornkernel').click(earnPoints);
   $('#buyTeenagers').click(buyTeenagers(1));
   $('#buyTenTeenagers').click(buyTeenagers(10));
