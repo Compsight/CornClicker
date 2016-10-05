@@ -2,7 +2,7 @@ var PLAYER;
 
 function startGame() {
   loadPlayer()
-  updateAllUIs()
+  updateUI()
 }
 
 function loadPlayer() {
@@ -34,18 +34,16 @@ function savePlayer() {
 
 function earnPoints() {
   PLAYER.points += 1
-  updateUI()
+  updateComponents(['points'])
   savePlayer()
 }
-
 
 function buyTeenagers(num) {
   teenagerIncrease = () => {
     if (PLAYER.points >= 20){
       PLAYER.teenagers += num
-      updateTeenagerDorm()
       PLAYER.points -= 20
-      updateUI()
+      updateComponents(['points', 'teenagers'])
 
       savePlayer()
     }
@@ -57,9 +55,8 @@ function buyKettles(num) {
   kettleIncrease = () => {
     if (PLAYER.points >= 50){
       PLAYER.kettles += num
-      updateKettleStorage()
       PLAYER.points -= 50
-      updateUI()
+      updateComponents(['points', 'kettles'])
 
       savePlayer()
     }
@@ -71,9 +68,8 @@ function buyTheaters(num) {
   theaterIncrease = () => {
     if (PLAYER.points >= 250){
       PLAYER.theaters += num
-      updateTheaterLocations()
       PLAYER.points -= 250
-      updateUI()
+      updateComponents(['points', 'theaters'])
 
       savePlayer()
     }
@@ -81,31 +77,14 @@ function buyTheaters(num) {
   return theaterIncrease
 }
 
-function updateAllUIs() {
-  updateUI()
-  updateTeenagerDorm()
-  updateKettleStorage()
-  updateTheaterLocations()
-}
-
 function updateUI() {
-  $('#points').text(PLAYER.points)
+  updateComponents(['points', 'teenagers', 'kettles', 'theaters'])
 }
 
-function updateTeenagerDorm() {
- $('#teenagers').text(PLAYER.teenagers)
-}
-
-function updateKettleStorage() {
-$('#kettles').text(PLAYER.kettles)
-}
-
-function updateTheaterLocations() {
- $('#theaters').text(PLAYER.theaters)
-}
-
-function storePrices(){
-  var TeenagerCost
+function updateComponents(compNames) {
+  compNames.forEach((compName) => {
+    $('#' + compName).text(PLAYER[compName])
+  })
 }
 
 $(document).ready(function() {
