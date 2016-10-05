@@ -5,9 +5,14 @@ var PLAYER = {
   theaters: 0
 }
 
+function savePlayer() {
+  Cookies.set("player", PLAYER)
+}
+
 function earnPoints() {
   PLAYER.points += 1
   updateUI()
+  savePlayer()
 }
 
 
@@ -18,6 +23,8 @@ function buyTeenagers(num) {
       updateTeenagerDorm()
       PLAYER.points -= 20
       updateUI()
+
+      savePlayer()
     }
   }
   return teenagerIncrease
@@ -30,6 +37,8 @@ function buyKettles(num) {
       updateKettleStorage()
       PLAYER.points -= 50
       updateUI()
+
+      savePlayer()
     }
   }
   return kettleIncrease
@@ -42,6 +51,8 @@ function buyTheaters(num) {
       updateTheaterLocations()
       PLAYER.points -= 250
       updateUI()
+
+      savePlayer()
     }
   }
   return theaterIncrease
