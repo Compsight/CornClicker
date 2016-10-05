@@ -1,23 +1,52 @@
-var PLAYER = {
-  points: 0,
-  teenagers: 0,
-  kettles: 0,
-  theaters: 0
+var PLAYER;
+
+function startGame() {
+  PLAYER = new Player()
+  PLAYER.load()
+  updateUI()
+}
+
+class Player {
+  constructor() {
+    this.points = 0
+    this.teenagers = 0
+    this.kettles = 0
+    this.theaters = 0
+  }
+
+  load() {
+    const playerJSON = Cookies.get('player');
+
+    if (typeof playerJSON === 'undefined') {
+      // PLAYER = newPlayer()
+    } else {
+      const playerState = JSON.parse(playerJSON)
+      this.points = playerState.points
+      this.teenagers = playerState.teenagers
+      this.kettles = playerState.kettles
+      this.theaters = playerState.theaters
+    }
+  }
+
+  save() {
+    Cookies.set("player", this)
+  }
 }
 
 function earnPoints() {
   PLAYER.points += 1
-  updateUI()
+  updateComponents(['points'])
+  PLAYER.save()
 }
-
 
 function buyTeenagers(num) {
   teenagerIncrease = () => {
     if (PLAYER.points >= 20){
       PLAYER.teenagers += num
-      updateTeenagerDorm()
       PLAYER.points -= 20
-      updateUI()
+      updateComponents(['points', 'teenagers'])
+
+      PLAYER.save()
     }
   }
   return teenagerIncrease
@@ -27,9 +56,10 @@ function buyKettles(num) {
   kettleIncrease = () => {
     if (PLAYER.points >= 50){
       PLAYER.kettles += num
-      updateKettleStorage()
       PLAYER.points -= 50
-      updateUI()
+      updateComponents(['points', 'kettles'])
+
+      PLAYER.save()
     }
   }
   return kettleIncrease
@@ -39,36 +69,28 @@ function buyTheaters(num) {
   theaterIncrease = () => {
     if (PLAYER.points >= 250){
       PLAYER.theaters += num
-      updateTheaterLocations()
       PLAYER.points -= 250
-      updateUI()
+      updateComponents(['points', 'theaters'])
+
+      PLAYER.save()
     }
   }
   return theaterIncrease
 }
 
-
 function updateUI() {
-  $('#points').text(PLAYER.points)
+  updateComponents(['points', 'teenagers', 'kettles', 'theaters'])
 }
 
-function updateTeenagerDorm() {
- $('#teenagers').text(PLAYER.teenagers)
-}
-
-function updateKettleStorage() {
-$('#kettles').text(PLAYER.kettles)
-}
-
-function updateTheaterLocations() {
- $('#theaters').text(PLAYER.theaters)
-}
-
-function storePrices(){
-  var TeenagerCost
+function updateComponents(compNames) {
+  compNames.forEach((compName) => {
+    $('#' + compName).text(PLAYER[compName])
+  })
 }
 
 $(document).ready(function() {
+  startGame()
+
   $('#popcornkernel').click(earnPoints);
   $('#buyTeenagers').click(buyTeenagers(1));
   $('#buyTenTeenagers').click(buyTeenagers(10));
