@@ -10,26 +10,39 @@ function earnPoints() {
   updateUI()
 }
 
+
 function buyTeenagers(num) {
   teenagerIncrease = () => {
-    PLAYER.teenagers += num
-    updateTeenagerDorm()
+    if (PLAYER.points >= 20){
+      PLAYER.teenagers += num
+      updateTeenagerDorm()
+      PLAYER.points -= 20
+      updateUI()
+    }
   }
   return teenagerIncrease
 }
 
 function buyKettles(num) {
   kettleIncrease = () => {
-    PLAYER.kettles += num
-    updateKettleStorage()
+    if (PLAYER.points >= 50){
+      PLAYER.kettles += num
+      updateKettleStorage()
+      PLAYER.points -= 50
+      updateUI()
+    }
   }
   return kettleIncrease
 }
 
 function buyTheaters(num) {
   theaterIncrease = () => {
-    PLAYER.theaters += num
-    updateTheaterLocations()
+    if (PLAYER.points >= 250){
+      PLAYER.theaters += num
+      updateTheaterLocations()
+      PLAYER.points -= 250
+      updateUI()
+    }
   }
   return theaterIncrease
 }
@@ -51,47 +64,19 @@ function updateTheaterLocations() {
  $('#theaters').text(PLAYER.theaters)
 }
 
+function storePrices(){
+  var TeenagerCost
+}
 
 $(document).ready(function() {
   $('#popcornkernel').click(earnPoints);
-})
-
-
-$(document).ready(function() {
   $('#buyTeenagers').click(buyTeenagers(1));
-})
-
-$(document).ready(function() {
   $('#buyTenTeenagers').click(buyTeenagers(10));
-})
-
-$(document).ready(function() {
   $('#buyHundredTeenagers').click(buyTeenagers(100));
-})
-
-
-$(document).ready(function() {
   $('#buyKettles').click(buyKettles(1));
-})
-
-$(document).ready(function() {
   $('#buyTenKettles').click(buyKettles(10));
-})
-
-$(document).ready(function() {
   $('#buyHundredKettles').click(buyKettles(100));
-})
-
-
-$(document).ready(function() {
   $('#buyTheaters').click(buyTheaters(1));
-})
-
-$(document).ready(function() {
   $('#buyTenTheaters').click(buyTheaters(10));
-})
-
-$(document).ready(function() {
   $('#buyHundredTheaters').click(buyTheaters(100));
 })
-
