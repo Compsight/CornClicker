@@ -1,41 +1,42 @@
 var PLAYER;
 
 function startGame() {
-  loadPlayer()
+  PLAYER = new Player()
+  PLAYER.load()
   updateUI()
 }
 
-function loadPlayer() {
-  const player = Cookies.get('player');
-
-  if (typeof player === 'undefined') {
-    PLAYER = newPlayer()
-  } else {
-    PLAYER = parsePlayer(player)
+class Player {
+  constructor() {
+    this.points = 0
+    this.teenagers = 0
+    this.kettles = 0
+    this.theaters = 0
   }
-}
 
-function parsePlayer(playerJSON) {
-  return JSON.parse(playerJSON)
-}
+  load() {
+    const playerJSON = Cookies.get('player');
 
-function newPlayer() {
-  return {
-    points: 0,
-    teenagers: 0,
-    kettles: 0,
-    theaters: 0
+    if (typeof playerJSON === 'undefined') {
+      // PLAYER = newPlayer()
+    } else {
+      const playerState = JSON.parse(playerJSON)
+      this.points = playerState.points
+      this.teenagers = playerState.teenagers
+      this.kettles = playerState.kettles
+      this.theaters = playerState.theaters
+    }
   }
-}
 
-function savePlayer() {
-  Cookies.set("player", PLAYER)
+  save() {
+    Cookies.set("player", this)
+  }
 }
 
 function earnPoints() {
   PLAYER.points += 1
   updateComponents(['points'])
-  savePlayer()
+  PLAYER.save()
 }
 
 function buyTeenagers(num) {
@@ -45,7 +46,7 @@ function buyTeenagers(num) {
       PLAYER.points -= 20
       updateComponents(['points', 'teenagers'])
 
-      savePlayer()
+      PLAYER.save()
     }
   }
   return teenagerIncrease
@@ -58,7 +59,7 @@ function buyKettles(num) {
       PLAYER.points -= 50
       updateComponents(['points', 'kettles'])
 
-      savePlayer()
+      PLAYER.save()
     }
   }
   return kettleIncrease
@@ -71,7 +72,7 @@ function buyTheaters(num) {
       PLAYER.points -= 250
       updateComponents(['points', 'theaters'])
 
-      savePlayer()
+      PLAYER.save()
     }
   }
   return theaterIncrease
