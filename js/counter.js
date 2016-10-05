@@ -6,6 +6,7 @@ function startGame() {
   updateUI()
 }
 
+
 class Player {
   constructor() {
     this.points = 0
@@ -31,6 +32,20 @@ class Player {
   save() {
     Cookies.set("player", this)
   }
+  reset() {
+    Cookies.remove("player")
+  }
+  clearStats() {
+    this.points = 0
+    this.teenagers = 0
+    this.kettles = 0
+    this.theaters = 0
+  }
+}
+function clearState() {
+  PLAYER.reset()
+  PLAYER.clearStats()
+  updateUI()
 }
 
 function earnPoints() {
@@ -101,4 +116,5 @@ $(document).ready(function() {
   $('#buyTheaters').click(buyTheaters(1));
   $('#buyTenTheaters').click(buyTheaters(10));
   $('#buyHundredTheaters').click(buyTheaters(100));
+  $('#reset').click(clearState)
 })
