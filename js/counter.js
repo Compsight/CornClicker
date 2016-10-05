@@ -1,5 +1,24 @@
 var PLAYER;
 
+const PRICE = {
+  teenagers: 20,
+  kettles: 50,
+  theaters: 250
+}
+
+function raiseTeenagerPrice(num) {
+  for (var index = num; index > 0; index--){
+    PRICE.teenagers *= 1.01
+  }
+}
+
+const teenagersPPC= 0 
+
+const PPS = {
+  kettles: 0,
+  theaters: 0
+}
+
 function startGame() {
   PLAYER = new Player()
   PLAYER.load()
@@ -34,18 +53,24 @@ class Player {
 }
 
 function earnPoints() {
-  PLAYER.points += 1
-  updateComponents(['points'])
+  PLAYER.points += 1000
+  updatePlayerComponents(['points'])
   PLAYER.save()
 }
 
+
+
 function buyTeenagers(num) {
   teenagerIncrease = () => {
-    if (PLAYER.points >= 20){
-      PLAYER.teenagers += num
-      PLAYER.points -= 20
-      updateComponents(['points', 'teenagers'])
+    const cost = PRICE.teenagers * num
 
+    if (PLAYER.points >= cost){
+      PLAYER.teenagers += num
+      PLAYER.points -= cost
+      
+      raiseTeenagerPrice(num)
+      updatePriceComponents(['teenagers'])
+      updatePlayerComponents(['points', 'teenagers'])
       PLAYER.save()
     }
   }
@@ -54,10 +79,10 @@ function buyTeenagers(num) {
 
 function buyKettles(num) {
   kettleIncrease = () => {
-    if (PLAYER.points >= 50){
+    if (PLAYER.points >= 50 * num){
       PLAYER.kettles += num
-      PLAYER.points -= 50
-      updateComponents(['points', 'kettles'])
+      PLAYER.points -= 50 * num
+      updatePlayerComponents(['points', 'kettles'])
 
       PLAYER.save()
     }
@@ -67,10 +92,10 @@ function buyKettles(num) {
 
 function buyTheaters(num) {
   theaterIncrease = () => {
-    if (PLAYER.points >= 250){
+    if (PLAYER.points >= 250 * num){
       PLAYER.theaters += num
-      PLAYER.points -= 250
-      updateComponents(['points', 'theaters'])
+      PLAYER.points -= 250 * num
+      updatePlayerComponents(['points', 'theaters'])
 
       PLAYER.save()
     }
@@ -79,14 +104,28 @@ function buyTheaters(num) {
 }
 
 function updateUI() {
-  updateComponents(['points', 'teenagers', 'kettles', 'theaters'])
+  updatePlayerComponents(['points', 'teenagers', 'kettles', 'theaters'])
+  updatePriceComponents(['teenagers', 'kettles', 'theaters'])
 }
 
-function updateComponents(compNames) {
+function updatePlayerComponents(compNames) {
   compNames.forEach((compName) => {
     $('#' + compName).text(PLAYER[compName])
   })
 }
+
+function updatePriceComponents(compNames) {
+  compNames.forEach((compName) => {
+    $('#' + compName + 'Price').text(PRICE[compName])
+  })
+}
+
+var start = new Date;
+
+setInterval(function() {
+    $('#fatherTime').text((new Date - start) + " Miliseconds");
+}, 1);
+
 
 $(document).ready(function() {
   startGame()
