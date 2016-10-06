@@ -23,7 +23,7 @@
     height: 100px;
 }
 
-html:hover #wrapper{
+html:hover #popcorn-wrapper{
   transform: rotate(-180deg);
   animation: fadeOut .75s .25s;
 }
