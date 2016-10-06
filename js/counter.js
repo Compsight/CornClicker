@@ -36,7 +36,6 @@ function raiseTheaterPrice(num) {
 
 function raiseCornPerSecond() {
   PLAYER.cps = PLAYER.kettles + (PLAYER.theaters * 6)
-}
 
 function startGame() {
   PLAYER = new Player()
@@ -104,6 +103,8 @@ function earnPointsPerSecond() {
   PLAYER.points +=(PLAYER.theaters * 6)
   updatePlayerComponents(['points'])
   PLAYER.save()
+
+
 }
 
 function buyTeenagers(num) {
@@ -188,13 +189,16 @@ function updatePriceComponents(compNames) {
 
 var start = new Date;
 
-setInterval(function() {
-    $('#fatherTime').text((new Date - start) + " Miliseconds");
+var theTime = setInterval(function() {
+    $('#fatherTime').text(Math.floor((new Date - start) / 1000) + " Seconds");
 }, 1);
+    if (theTime % 1000 === 0) {
+      earnPointsPerSecond()
+    }
 
 $(document).ready(function() {
   startGame()
-  $('#popcornkernel').click(earnPointsFromClick);
+  $('#corn-kernel').click(earnPointsFromClick);
   $('#buyTeenagers').click(buyTeenagers(1));
   $('#buyTenTeenagers').click(buyTeenagers(10));
   $('#buyHundredTeenagers').click(buyTeenagers(100));
