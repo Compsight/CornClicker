@@ -80,10 +80,16 @@ function clearState() {
   updateUI()
 }
 
-function earnPoints() {
-  PLAYER.points += 1
+function earnPointsFromClick() {
+  PLAYER.points += (1 + PLAYER.teenagers*2)
   updatePlayerComponents(['points'])
   PLAYER.save()
+//When there are no teenagers, one click = one point.
+//When there is one teenager, one click = three points.
+//When there are five teenagers, one click = five points.
+//For each teenager, points per click increases by two.
+//Everytime you click, you get one base point plus number of teenagers * 2.
+
 }
 
 
@@ -168,7 +174,7 @@ setInterval(function() {
 $(document).ready(function() {
   startGame()
 
-  $('#popcornkernel').click(earnPoints);
+  $('#popcornkernel').click(earnPointsFromClick);
   $('#buyTeenagers').click(buyTeenagers(1));
   $('#buyTenTeenagers').click(buyTeenagers(10));
   $('#buyHundredTeenagers').click(buyTeenagers(100));
