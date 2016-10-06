@@ -8,7 +8,7 @@ const PRICE = {
 
 function raiseTeenagerPrice(num) {
   for (var index = num; index > 0; index--){
-    PRICE.teenagers *= 1.01
+    PRICE.teenagers *= 1.01;
   }
 }
 
@@ -18,9 +18,9 @@ function raiseKettlePrice(num) {
   }
 }
 
-function raiseTheatrePrice(num) {
+function raiseTheaterPrice(num) {
   for (var index = num; index > 0; index--){
-    PRICE.theatres *= 1.01
+    PRICE.theaters *= 1.01
   }
 }
 const PPS = {
@@ -58,6 +58,8 @@ class Player {
     }
   }
 
+
+
   save() {
     Cookies.set("player", this)
   }
@@ -71,6 +73,7 @@ class Player {
     this.theaters = 0
   }
 }
+
 function clearState() {
   PLAYER.reset()
   PLAYER.clearStats()
@@ -78,7 +81,7 @@ function clearState() {
 }
 
 function earnPoints() {
-  PLAYER.points += 1000
+  PLAYER.points += 1
   updatePlayerComponents(['points'])
   PLAYER.save()
 }
@@ -92,8 +95,8 @@ function buyTeenagers(num) {
     if (PLAYER.points >= cost){
       PLAYER.teenagers += num
       PLAYER.points -= cost
-
       raiseTeenagerPrice(num)
+
       updatePriceComponents(['teenagers'])
       updatePlayerComponents(['points', 'teenagers'])
       PLAYER.save()
@@ -106,7 +109,7 @@ function buyKettles(num) {
   kettleIncrease = () => {
     const cost = PRICE.kettles * num
 
-    if (PLAYER.points >= 50 * num){
+    if (PLAYER.points >= cost){
       PLAYER.kettles += num
       PLAYER.points -= cost
 
@@ -128,8 +131,8 @@ function buyTheaters(num) {
       PLAYER.theaters += num
       PLAYER.points -= cost
 
-      raiseTheatrePrice(num)
-      updatePriceComponents(['theatres'])
+      raiseTheaterPrice(num)
+      updatePriceComponents(['theaters'])
       updatePlayerComponents(['points', 'theaters'])
 
       PLAYER.save()
@@ -145,13 +148,13 @@ function updateUI() {
 
 function updatePlayerComponents(compNames) {
   compNames.forEach((compName) => {
-    $('#' + compName).text(PLAYER[compName])
+    $('#' + compName).text(Math.round(PLAYER[compName]))
   })
 }
 
 function updatePriceComponents(compNames) {
   compNames.forEach((compName) => {
-    $('#' + compName + 'Price').text(PRICE[compName])
+    $('#' + compName + 'Price').text(Math.round(PRICE[compName]))
   })
 }
 
