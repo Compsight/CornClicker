@@ -36,13 +36,15 @@ const PPS = {
 function startGame() {
   PLAYER = new Player()
   PLAYER.load()
+  setInterval(earnPointsPerSecond, 1000);
   updateUI()
 }
 
+const STARTING_POINTS = 0
 
 class Player {
   constructor() {
-    this.points = 0
+    this.points = STARTING_POINTS
     this.teenagers = 0
     this.kettles = 0
     this.theaters = 0
@@ -71,7 +73,7 @@ class Player {
     Cookies.remove("player")
   }
   clearStats() {
-    this.points = 0
+    this.points = STARTING_POINTS
     this.teenagers = 0
     this.kettles = 0
     this.theaters = 0
@@ -90,6 +92,14 @@ function earnPoints() {
   PLAYER.save()
 }
 
+function earnPointsPerSecond() {
+  PLAYER.points += PLAYER.kettles
+  updatePlayerComponents(['points'])
+  PLAYER.save()
+}
+//every second elapses your current PPS are added to PLAYER.points
+//number of points per second you earn == number of kettles owned
+//update new PPS total
 
 
 function buyTeenagers(num) {
