@@ -6,10 +6,26 @@
     align-items: center;
 }
 
-#popcornkernel {
+#corn-kernel {
     align-items: center;
     flex-direction: column;
     align-items: center;
+}
+
+#popcorn-wrapper {
+  transform-origin: 50% 50% ;
+  transition: all 1s;
+}
+
+#popped-kernel {
+  transition: transform 1s;
+    width: 100px;
+    height: 100px;
+}
+
+html:hover #wrapper{
+  transform: rotate(-180deg);
+  animation: fadeOut .75s .25s;
 }
 
 .store-button {}
