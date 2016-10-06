@@ -90,6 +90,12 @@ function earnPoints() {
   PLAYER.save()
 }
 
+function earnPointsPerSecond() {
+  PLAYER.points += PLAYER.kettles
+  PLAYER.points +=(PLAYER.theaters * 6)
+  updatePlayerComponents(['points'])
+  PLAYER.save()
+}
 
 
 function buyTeenagers(num) {
