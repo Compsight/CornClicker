@@ -36,13 +36,14 @@ const PPS = {
 function startGame() {
   PLAYER = new Player()
   PLAYER.load()
+  setInterval(earnPointsPerSecond, 1000)
   updateUI()
 }
-
+const STARTING_POINTS = 1000
 
 class Player {
   constructor() {
-    this.points = 0
+    this.points = STARTING_POINTS
     this.teenagers = 0
     this.kettles = 0
     this.theaters = 0
@@ -88,11 +89,6 @@ function earnPointsFromClick() {
   PLAYER.points += (1 + PLAYER.teenagers*2)
   updatePlayerComponents(['points'])
   PLAYER.save()
-//When there are no teenagers, one click = one point.
-//When there is one teenager, one click = three points.
-//When there are five teenagers, one click = five points.
-//For each teenager, points per click increases by two.
-//Everytime you click, you get one base point plus number of teenagers * 2.
 
 }
 
