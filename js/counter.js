@@ -27,10 +27,15 @@ function raiseTheaterPrice(num) {
   PRICE.theaters = Math.ceil(PRICE.theaters)
 }
 
-const PPS = {
-  teenagers: 0,
-  kettles: 0,
-  theaters: 0
+function raiseTheaterPrice(num) {
+  for (var index = num; index > 0; index--){
+    PRICE.theaters *= 1.01
+  }
+  PRICE.theaters = Math.ceil(PRICE.theaters)
+}
+
+function raiseCornPerSecond() {
+  PLAYER.cps = PLAYER.kettles + (PLAYER.theaters * 6)
 }
 
 function startGame() {
@@ -39,6 +44,7 @@ function startGame() {
   setInterval(earnPointsPerSecond, 1000)
   updateUI()
 }
+
 const STARTING_POINTS = 1000
 
 class Player {
@@ -47,6 +53,7 @@ class Player {
     this.teenagers = 0
     this.kettles = 0
     this.theaters = 0
+    this.cps = 0
   }
 
   load() {
@@ -60,10 +67,9 @@ class Player {
       this.teenagers = playerState.teenagers
       this.kettles = playerState.kettles
       this.theaters = playerState.theaters
+      this.cps = playerState.cps
     }
   }
-
-
 
   save() {
     Cookies.set("player", this)
@@ -76,6 +82,7 @@ class Player {
     this.teenagers = 0
     this.kettles = 0
     this.theaters = 0
+    this.cps = 0
   }
 }
 
@@ -98,7 +105,6 @@ function earnPointsPerSecond() {
   updatePlayerComponents(['points'])
   PLAYER.save()
 }
-
 
 function buyTeenagers(num) {
   teenagerIncrease = () => {
@@ -146,15 +152,25 @@ function buyTheaters(num) {
       raiseTheaterPrice(num)
       updatePriceComponents(['theaters'])
       updatePlayerComponents(['points', 'theaters'])
-
+      updateCPS()()
       PLAYER.save()
     }
   }
   return theaterIncrease
 }
 
+function updateCPS() {
+  cpsIncrease = () => {
+
+    raiseCornPerSecond()
+    updatePlayerComponents(['cps'])
+    PLAYER.save()
+  }
+  return cpsIncrease
+}
+
 function updateUI() {
-  updatePlayerComponents(['points', 'teenagers', 'kettles', 'theaters'])
+  updatePlayerComponents(['points', 'teenagers', 'kettles', 'theaters', 'cps'])
   updatePriceComponents(['teenagers', 'kettles', 'theaters'])
 }
 
@@ -176,10 +192,8 @@ setInterval(function() {
     $('#fatherTime').text((new Date - start) + " Miliseconds");
 }, 1);
 
-
 $(document).ready(function() {
   startGame()
-
   $('#popcornkernel').click(earnPointsFromClick);
   $('#buyTeenagers').click(buyTeenagers(1));
   $('#buyTenTeenagers').click(buyTeenagers(10));
