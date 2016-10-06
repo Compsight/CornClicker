@@ -36,6 +36,7 @@ function raiseTheaterPrice(num) {
 
 function raiseCornPerSecond() {
   PLAYER.cps = PLAYER.kettles + (PLAYER.theaters * 6)
+}
 
 function startGame() {
   PLAYER = new Player()
