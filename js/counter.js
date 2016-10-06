@@ -12,9 +12,19 @@ function raiseTeenagerPrice(num) {
   }
 }
 
-const teenagersPPC= 0 
+function raiseKettlePrice(num) {
+  for (var index = num; index > 0; index--){
+    PRICE.kettles *= 1.01
+  }
+}
 
+function raiseTheatrePrice(num) {
+  for (var index = num; index > 0; index--){
+    PRICE.theatres *= 1.01
+  }
+}
 const PPS = {
+  teenagers: 0,
   kettles: 0,
   theaters: 0
 }
@@ -82,7 +92,7 @@ function buyTeenagers(num) {
     if (PLAYER.points >= cost){
       PLAYER.teenagers += num
       PLAYER.points -= cost
-      
+
       raiseTeenagerPrice(num)
       updatePriceComponents(['teenagers'])
       updatePlayerComponents(['points', 'teenagers'])
@@ -94,9 +104,14 @@ function buyTeenagers(num) {
 
 function buyKettles(num) {
   kettleIncrease = () => {
+    const cost = PRICE.kettles * num
+
     if (PLAYER.points >= 50 * num){
       PLAYER.kettles += num
-      PLAYER.points -= 50 * num
+      PLAYER.points -= cost
+
+      raiseKettlePrice(num)
+      updatePriceComponents(['kettles'])
       updatePlayerComponents(['points', 'kettles'])
 
       PLAYER.save()
@@ -107,9 +122,14 @@ function buyKettles(num) {
 
 function buyTheaters(num) {
   theaterIncrease = () => {
+    const cost = PRICE.theaters * num
+
     if (PLAYER.points >= 250 * num){
       PLAYER.theaters += num
-      PLAYER.points -= 250 * num
+      PLAYER.points -= cost
+
+      raiseTheatrePrice(num)
+      updatePriceComponents(['theatres'])
       updatePlayerComponents(['points', 'theaters'])
 
       PLAYER.save()
