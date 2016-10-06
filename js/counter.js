@@ -10,19 +10,23 @@ function raiseTeenagerPrice(num) {
   for (var index = num; index > 0; index--){
     PRICE.teenagers *= 1.01;
   }
+  PRICE.teenagers = Math.ceil(PRICE.teenagers)
 }
 
 function raiseKettlePrice(num) {
   for (var index = num; index > 0; index--){
     PRICE.kettles *= 1.01
   }
+  PRICE.kettles = Math.ceil(PRICE.kettles)
 }
 
 function raiseTheaterPrice(num) {
   for (var index = num; index > 0; index--){
     PRICE.theaters *= 1.01
   }
+  PRICE.theaters = Math.ceil(PRICE.theaters)
 }
+
 const PPS = {
   teenagers: 0,
   kettles: 0,
@@ -148,13 +152,13 @@ function updateUI() {
 
 function updatePlayerComponents(compNames) {
   compNames.forEach((compName) => {
-    $('#' + compName).text(Math.round(PLAYER[compName]))
+    $('#' + compName).text(PLAYER[compName])
   })
 }
 
 function updatePriceComponents(compNames) {
   compNames.forEach((compName) => {
-    $('#' + compName + 'Price').text(Math.round(PRICE[compName]))
+    $('#' + compName + 'Price').text(PRICE[compName])
   })
 }
 
