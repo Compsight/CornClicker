@@ -207,6 +207,17 @@ function updatePriceComponents(compNames) {
   })
 }
 
+function animatePopcornKernel() {
+  const randLeftPos = Math.round((0.5 - Math.random()) * 2000)
+  const randTopPos = Math.round((0.5 - Math.random()) * 2000)
+
+  $('#popped-kernel')
+    .show()
+    .animate({ left: `${randLeftPos}px`, top: `${randTopPos}px` }, 500, function() {
+      $(this).css({ left: "7%", top: "363px" }).hide()
+    })
+}
+
 var start = new Date;
 
 var theTime = setInterval(function() {
@@ -219,6 +230,7 @@ var theTime = setInterval(function() {
 $(document).ready(function() {
   startGame()
   $('#corn-kernel').click(earnPointsFromClick);
+  $('#corn-kernel').click(animatePopcornKernel);
   $('#buyTeenagers').click(buyTeenagers(1));
   $('#buyTenTeenagers').click(buyTeenagers(10));
   $('#buyHundredTeenagers').click(buyTeenagers(100));

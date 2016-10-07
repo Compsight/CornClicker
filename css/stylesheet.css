@@ -12,20 +12,14 @@
     align-items: center;
 }
 
-#popcorn-wrapper {
-  transform-origin: 50% 50% ;
-  transition: all 1s;
-}
-
 #popped-kernel {
-  transition: transform 1s;
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  left: 7%;
+  top: 363px;
+  display: none;
 }
 
-html:hover #popcorn-wrapper{
-  transform: rotate(-180deg);
-  animation: fadeOut .75s .25s;
-}
 
 .store-button {}
