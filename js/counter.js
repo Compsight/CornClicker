@@ -136,7 +136,7 @@ function buyKettles(num) {
       raiseKettlePrice(num)
       updatePriceComponents(['kettles'])
       updatePlayerComponents(['points', 'kettles'])
-
+      updateCPS()()
       PLAYER.save()
     }
   }
