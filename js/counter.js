@@ -92,11 +92,32 @@ function clearState() {
   updateUI()
 }
 
-function earnPointsFromClick() {
-  PLAYER.points += (1 + PLAYER.teenagers*2)
+function addPointsDiv( amount, x, y ) {
+  let textElement = $('<div>')
+  
+  textElement.text( amount )
+  textElement.css({ 
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    left: x,
+    top: y
+  })
+
+  $('body').append( textElement )
+  
+  window.setTimeout( function() {
+    textElement.remove()
+  }, 1000 )
+}
+
+function earnPointsFromClick( event ) {
+  let amount = 1 + PLAYER.teenagers*2
+
+  addPointsDiv( amount, event.clientX, event.clientY )
+
+  PLAYER.points += amount
   updatePlayerComponents(['points'])
   PLAYER.save()
-
 }
 
 function earnPointsPerSecond() {
@@ -104,8 +125,6 @@ function earnPointsPerSecond() {
   PLAYER.points +=(PLAYER.theaters * 6)
   updatePlayerComponents(['points'])
   PLAYER.save()
-
-
 }
 
 function buyTeenagers(num) {
