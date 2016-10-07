@@ -8,6 +8,20 @@ const PRICE = {
     this.teenagers = 20
     this.kettles = 50
     this.theaters = 250
+  },
+  save: function() {
+    Cookies.set("price", this)
+  },
+  load: function() {
+    const priceJSON = Cookies.get('price')
+
+    if (typeof priceJSON !== 'undefined') {
+      const priceValues = JSON.parse(priceJSON)
+
+      this.teenagers = priceValues.teenagers
+      this.kettles = priceValues.kettles
+      this.theaters = priceValues.theaters
+    }
   }
 }
 
@@ -32,6 +46,7 @@ function raiseTeenagerPrice(num) {
     PRICE.teenagers *= 1.01;
   }
   PRICE.teenagers = Math.ceil(PRICE.teenagers)
+  PRICE.save()
 }
 
 function raiseKettlePrice(num) {
@@ -39,6 +54,7 @@ function raiseKettlePrice(num) {
     PRICE.kettles *= 1.01
   }
   PRICE.kettles = Math.ceil(PRICE.kettles)
+  PRICE.save()
 }
 
 function raiseTheaterPrice(num) {
@@ -46,13 +62,7 @@ function raiseTheaterPrice(num) {
     PRICE.theaters *= 1.01
   }
   PRICE.theaters = Math.ceil(PRICE.theaters)
-}
-
-function raiseTheaterPrice(num) {
-  for (var index = num; index > 0; index--){
-    PRICE.theaters *= 1.01
-  }
-  PRICE.theaters = Math.ceil(PRICE.theaters)
+  PRICE.save()
 }
 
 function raiseCornPerSecond() {
@@ -62,6 +72,7 @@ function raiseCornPerSecond() {
 function startGame() {
   PLAYER = new Player()
   PLAYER.load()
+  PRICE.load()
   setInterval(earnPointsPerSecond, 1000)
   Timer.start()
   updateUI()
