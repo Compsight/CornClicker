@@ -214,7 +214,7 @@ function animatePopcornKernel() {
   $('#popped-kernel')
     .show()
     .animate({ left: `${randLeftPos}px`, top: `${randTopPos}px` }, 500, function() {
-      $(this).css({ left: "7%", top: "363px" }).hide()
+      $(this).css({ left: '44%', top: '37%' }).hide()
     })
 }
 

@@ -15,9 +15,9 @@
 #popped-kernel {
   width: 100px;
   height: 100px;
-  position: relative;
-  left: 7%;
-  top: 363px;
+  position: absolute;
+  left: 44%;
+  top: 37%;
   display: none;
 }
 
