@@ -7,9 +7,13 @@
 }
 
 #corn-kernel {
-    align-items: center;
-    flex-direction: column;
-    align-items: center;
+  background-image: url('/images/bg-corn.png');
+  background-repeat: no-repeat;
+  height: 500px;
+  min-width: 400px;
+  align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 #popped-kernel {

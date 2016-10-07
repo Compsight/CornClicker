@@ -93,10 +93,10 @@ function clearState() {
 }
 
 function addPointsDiv( amount, x, y ) {
-  let textElement = $('<div>')
-  
-  textElement.text( amount )
-  textElement.css({ 
+  let textElement = $('<div class="badge">')
+
+  textElement.text( '+' + String(amount) )
+  textElement.css({
     backgroundColor: 'transparent',
     position: 'absolute',
     left: x,
@@ -113,7 +113,7 @@ function addPointsDiv( amount, x, y ) {
 function earnPointsFromClick( event ) {
   let amount = 1 + PLAYER.teenagers*2
 
-  addPointsDiv( amount, event.clientX, event.clientY )
+  addPointsDiv( amount, event.clientX - 50, event.clientY + 25 )
 
   PLAYER.points += amount
   updatePlayerComponents(['points'])
