@@ -3,7 +3,12 @@ var PLAYER;
 const PRICE = {
   teenagers: 20,
   kettles: 50,
-  theaters: 250
+  theaters: 250,
+  reset: function() {
+    this.teenagers = 20
+    this.kettles = 50
+    this.theaters = 250
+  }
 }
 
 const Timer = {
@@ -108,7 +113,7 @@ function resetGame() {
   PLAYER.clearStats()
 
   Timer.reset()
-  // resetPrice()
+  PRICE.reset()
 
   updateUI()
 }
