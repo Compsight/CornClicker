@@ -30,75 +30,9 @@ const PRICE = {
   }
 }
 
-function enableDoublePower() {
-  const costForUpgrade = 1000
-
-  if (!PRICE.doublePower && PLAYER.points >= costForUpgrade) {
-    PLAYER.points -= costForUpgrade
-    PRICE.doublePower = true
-    PRICE.save()
-    updateDoublePowerButton()
-  }
-}
-
-const Timer = {
-  reset: function() {
-    clearInterval(this.id)
-    $('#fatherTime').text("0 Seconds")
-    this.start()
-  },
-
-  start: function() {
-    var start = new Date;
-
-    this.id = setInterval(function() {
-      $('#fatherTime').text(Math.floor((new Date - start) / 1000) + " Seconds");
-    }, 900);
-  }
-}
-
-function raiseTeenagerPrice(num) {
-  for (var index = num; index > 0; index--) {
-    PRICE.teenagers *= 1.01;
-  }
-  PRICE.teenagers = Math.ceil(PRICE.teenagers)
-  PRICE.save()
-}
-
-function raiseKettlePrice(num) {
-  for (var index = num; index > 0; index--) {
-    PRICE.kettles *= 1.01
-  }
-  PRICE.kettles = Math.ceil(PRICE.kettles)
-  PRICE.save()
-}
-
-function raiseTheaterPrice(num) {
-  for (var index = num; index > 0; index--) {
-    PRICE.theaters *= 1.01
-  }
-  PRICE.theaters = Math.ceil(PRICE.theaters)
-  PRICE.save()
-}
-
-function raiseCornPerSecond() {
-  PLAYER.cps = PLAYER.kettles + (PLAYER.theaters * 6)
-}
-
-function startGame() {
-  PLAYER = new Player()
-  PLAYER.load()
-  PRICE.load()
-  setInterval(earnPointsPerSecond, 1000)
-  Timer.start()
-  updateUI()
-}
-
-const STARTING_POINTS = 1000
-
 class Player {
   constructor() {
-    this.points = STARTING_POINTS
+    this.points = 0
     this.teenagers = 0
     this.kettles = 0
     this.theaters = 0
@@ -135,6 +69,84 @@ class Player {
   }
 }
 
+const Timer = {
+  reset: function() {
+    clearInterval(this.id)
+    $('#fatherTime').text("0 Seconds")
+    this.start()
+  },
+
+  start: function() {
+    var start = new Date;
+
+    this.id = setInterval(function() {
+      $('#fatherTime').text(Math.floor((new Date - start) / 1000) + " Seconds");
+    }, 900);
+  }
+}
+
+// Price and click modifications
+// ----
+function enableDoublePower() {
+  const costForUpgrade = 1000
+
+  if (!PRICE.doublePower && PLAYER.points >= costForUpgrade) {
+    PLAYER.points -= costForUpgrade
+    PRICE.doublePower = true
+    PRICE.save()
+    updateDoublePowerButton()
+  }
+}
+
+function raiseTeenagerPrice(num) {
+  for (var index = num; index > 0; index--) {
+    PRICE.teenagers *= 1.01;
+  }
+  PRICE.teenagers = Math.ceil(PRICE.teenagers)
+  PRICE.save()
+}
+
+function raiseKettlePrice(num) {
+  for (var index = num; index > 0; index--) {
+    PRICE.kettles *= 1.01
+  }
+  PRICE.kettles = Math.ceil(PRICE.kettles)
+  PRICE.save()
+}
+
+function raiseTheaterPrice(num) {
+  for (var index = num; index > 0; index--) {
+    PRICE.theaters *= 1.01
+  }
+  PRICE.theaters = Math.ceil(PRICE.theaters)
+  PRICE.save()
+}
+
+function raiseCornPerSecond() {
+  PLAYER.cps = PLAYER.kettles + (PLAYER.theaters * 6)
+}
+
+function updateCPS() {
+  cpsIncrease = () => {
+
+    raiseCornPerSecond()
+    updatePlayerComponents(['cps'])
+    PLAYER.save()
+  }
+  return cpsIncrease
+}
+
+// Game commands
+// ----
+function startGame() {
+  PLAYER = new Player()
+  PLAYER.load()
+  PRICE.load()
+  setInterval(earnPointsPerSecond, 1000)
+  Timer.start()
+  updateUI()
+}
+
 function resetGame() {
   PLAYER.reset()
   PLAYER.clearStats()
@@ -145,24 +157,8 @@ function resetGame() {
   updateUI()
 }
 
-function addPointsDiv(amount, x, y) {
-  let textElement = $('<div class="badge">')
-
-  textElement.text('+' + String(amount))
-  textElement.css({
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    left: x,
-    top: y
-  })
-
-  $('body').append(textElement)
-
-  window.setTimeout(function() {
-    textElement.remove()
-  }, 1000)
-}
-
+// Earning points
+//----
 function earnPointsFromClick(event) {
   let amount = 1 + PLAYER.teenagers * 2
 
@@ -184,6 +180,8 @@ function earnPointsPerSecond() {
   PLAYER.save()
 }
 
+// Store functions
+//----
 function buyTeenagers(num) {
   teenagerIncrease = () => {
     const cost = PRICE.teenagers * num
@@ -237,16 +235,8 @@ function buyTheaters(num) {
   return theaterIncrease
 }
 
-function updateCPS() {
-  cpsIncrease = () => {
-
-    raiseCornPerSecond()
-    updatePlayerComponents(['cps'])
-    PLAYER.save()
-  }
-  return cpsIncrease
-}
-
+// User interface related functions
+//----
 function updateUI() {
   updatePlayerComponents(['points', 'teenagers', 'kettles', 'theaters', 'cps'])
   updatePriceComponents(['teenagers', 'kettles', 'theaters'])
@@ -277,6 +267,24 @@ function updateDoublePowerButton() {
   }
 }
 
+function addPointsDiv(amount, x, y) {
+  let textElement = $('<div class="badge">')
+
+  textElement.text('+' + String(amount))
+  textElement.css({
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    left: x,
+    top: y
+  })
+
+  $('body').append(textElement)
+
+  window.setTimeout(function() {
+    textElement.remove()
+  }, 1000)
+}
+
 function animatePopcornKernel() {
   const randLeftPos = Math.round((0.5 - Math.random()) * 2000)
   const randTopPos = Math.round((0.5 - Math.random()) * 2000)
@@ -294,6 +302,8 @@ function animatePopcornKernel() {
     })
 }
 
+// Start the game!
+//----
 $(document).ready(function() {
   startGame()
   $('#corn-kernel').click(earnPointsFromClick);
