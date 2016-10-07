@@ -3,7 +3,42 @@ var PLAYER;
 const PRICE = {
   teenagers: 20,
   kettles: 50,
-  theaters: 250
+  theaters: 250,
+  reset: function() {
+    this.teenagers = 20
+    this.kettles = 50
+    this.theaters = 250
+  },
+  save: function() {
+    Cookies.set("price", this)
+  },
+  load: function() {
+    const priceJSON = Cookies.get('price')
+
+    if (typeof priceJSON !== 'undefined') {
+      const priceValues = JSON.parse(priceJSON)
+
+      this.teenagers = priceValues.teenagers
+      this.kettles = priceValues.kettles
+      this.theaters = priceValues.theaters
+    }
+  }
+}
+
+const Timer = {
+  reset: function() {
+    clearInterval(this.id)
+    $('#fatherTime').text("0 Seconds")
+    this.start()
+  },
+
+  start: function() {
+    var start = new Date;
+
+    this.id = setInterval(function() {
+      $('#fatherTime').text(Math.floor((new Date - start) / 1000) + " Seconds");
+    }, 900);
+  }
 }
 
 function raiseTeenagerPrice(num) {
@@ -11,6 +46,7 @@ function raiseTeenagerPrice(num) {
     PRICE.teenagers *= 1.01;
   }
   PRICE.teenagers = Math.ceil(PRICE.teenagers)
+  PRICE.save()
 }
 
 function raiseKettlePrice(num) {
@@ -18,6 +54,7 @@ function raiseKettlePrice(num) {
     PRICE.kettles *= 1.01
   }
   PRICE.kettles = Math.ceil(PRICE.kettles)
+  PRICE.save()
 }
 
 function raiseTheaterPrice(num) {
@@ -25,13 +62,7 @@ function raiseTheaterPrice(num) {
     PRICE.theaters *= 1.01
   }
   PRICE.theaters = Math.ceil(PRICE.theaters)
-}
-
-function raiseTheaterPrice(num) {
-  for (var index = num; index > 0; index--){
-    PRICE.theaters *= 1.01
-  }
-  PRICE.theaters = Math.ceil(PRICE.theaters)
+  PRICE.save()
 }
 
 function raiseCornPerSecond() {
@@ -41,7 +72,9 @@ function raiseCornPerSecond() {
 function startGame() {
   PLAYER = new Player()
   PLAYER.load()
+  PRICE.load()
   setInterval(earnPointsPerSecond, 1000)
+  Timer.start()
   updateUI()
 }
 
@@ -86,17 +119,21 @@ class Player {
   }
 }
 
-function clearState() {
+function resetGame() {
   PLAYER.reset()
   PLAYER.clearStats()
+
+  Timer.reset()
+  PRICE.reset()
+
   updateUI()
 }
 
 function addPointsDiv( amount, x, y ) {
-  let textElement = $('<div>')
-  
-  textElement.text( amount )
-  textElement.css({ 
+  let textElement = $('<div class="badge">')
+
+  textElement.text( '+' + String(amount) )
+  textElement.css({
     backgroundColor: 'transparent',
     position: 'absolute',
     left: x,
@@ -104,7 +141,7 @@ function addPointsDiv( amount, x, y ) {
   })
 
   $('body').append( textElement )
-  
+
   window.setTimeout( function() {
     textElement.remove()
   }, 1000 )
@@ -113,7 +150,7 @@ function addPointsDiv( amount, x, y ) {
 function earnPointsFromClick( event ) {
   let amount = 1 + PLAYER.teenagers*2
 
-  addPointsDiv( amount, event.clientX, event.clientY )
+  addPointsDiv( amount, event.clientX - 50, event.clientY + 25 )
 
   PLAYER.points += amount
   updatePlayerComponents(['points'])
@@ -218,15 +255,6 @@ function animatePopcornKernel() {
     })
 }
 
-var start = new Date;
-
-var theTime = setInterval(function() {
-    $('#fatherTime').text(Math.floor((new Date - start) / 1000) + " Seconds");
-}, 1);
-    if (theTime % 1000 === 0) {
-      earnPointsPerSecond()
-    }
-
 $(document).ready(function() {
   startGame()
   $('#corn-kernel').click(earnPointsFromClick);
@@ -240,5 +268,5 @@ $(document).ready(function() {
   $('#buyTheaters').click(buyTheaters(1));
   $('#buyTenTheaters').click(buyTheaters(10));
   $('#buyHundredTheaters').click(buyTheaters(100));
-  $('#reset').click(clearState)
+  $('#reset').click(resetGame)
 })
