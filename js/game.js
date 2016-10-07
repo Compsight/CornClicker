@@ -58,7 +58,7 @@ const Timer = {
 }
 
 function raiseTeenagerPrice(num) {
-  for (var index = num; index > 0; index--){
+  for (var index = num; index > 0; index--) {
     PRICE.teenagers *= 1.01;
   }
   PRICE.teenagers = Math.ceil(PRICE.teenagers)
@@ -66,7 +66,7 @@ function raiseTeenagerPrice(num) {
 }
 
 function raiseKettlePrice(num) {
-  for (var index = num; index > 0; index--){
+  for (var index = num; index > 0; index--) {
     PRICE.kettles *= 1.01
   }
   PRICE.kettles = Math.ceil(PRICE.kettles)
@@ -74,7 +74,7 @@ function raiseKettlePrice(num) {
 }
 
 function raiseTheaterPrice(num) {
-  for (var index = num; index > 0; index--){
+  for (var index = num; index > 0; index--) {
     PRICE.theaters *= 1.01
   }
   PRICE.theaters = Math.ceil(PRICE.theaters)
@@ -145,10 +145,10 @@ function resetGame() {
   updateUI()
 }
 
-function addPointsDiv( amount, x, y ) {
+function addPointsDiv(amount, x, y) {
   let textElement = $('<div class="badge">')
 
-  textElement.text( '+' + String(amount) )
+  textElement.text('+' + String(amount))
   textElement.css({
     backgroundColor: 'transparent',
     position: 'absolute',
@@ -156,21 +156,21 @@ function addPointsDiv( amount, x, y ) {
     top: y
   })
 
-  $('body').append( textElement )
+  $('body').append(textElement)
 
-  window.setTimeout( function() {
+  window.setTimeout(function() {
     textElement.remove()
-  }, 1000 )
+  }, 1000)
 }
 
-function earnPointsFromClick( event ) {
-  let amount = 1 + PLAYER.teenagers*2
+function earnPointsFromClick(event) {
+  let amount = 1 + PLAYER.teenagers * 2
 
   if (PRICE.doublePower) {
     amount *= 2
   }
 
-  addPointsDiv( amount, event.clientX - 50, event.clientY + 25 )
+  addPointsDiv(amount, event.clientX - 50, event.clientY + 25)
 
   PLAYER.points += amount
   updatePlayerComponents(['points'])
@@ -179,7 +179,7 @@ function earnPointsFromClick( event ) {
 
 function earnPointsPerSecond() {
   PLAYER.points += PLAYER.kettles
-  PLAYER.points +=(PLAYER.theaters * 6)
+  PLAYER.points += (PLAYER.theaters * 6)
   updatePlayerComponents(['points'])
   PLAYER.save()
 }
@@ -188,7 +188,7 @@ function buyTeenagers(num) {
   teenagerIncrease = () => {
     const cost = PRICE.teenagers * num
 
-    if (PLAYER.points >= cost){
+    if (PLAYER.points >= cost) {
       PLAYER.teenagers += num
       PLAYER.points -= cost
       raiseTeenagerPrice(num)
@@ -205,7 +205,7 @@ function buyKettles(num) {
   kettleIncrease = () => {
     const cost = PRICE.kettles * num
 
-    if (PLAYER.points >= cost){
+    if (PLAYER.points >= cost) {
       PLAYER.kettles += num
       PLAYER.points -= cost
 
@@ -223,7 +223,7 @@ function buyTheaters(num) {
   theaterIncrease = () => {
     const cost = PRICE.theaters * num
 
-    if (PLAYER.points >= 250 * num){
+    if (PLAYER.points >= 250 * num) {
       PLAYER.theaters += num
       PLAYER.points -= cost
 
@@ -267,7 +267,9 @@ function updatePriceComponents(compNames) {
 
 function updateDoublePowerButton() {
   if (PRICE.doublePower) {
-    $('#clickToDouble').attr({ disabled: "disabled" })
+    $('#clickToDouble').attr({
+        disabled: "disabled"
+      })
       .text("DOUBLE POWER ACTIVATED")
   } else {
     $('#clickToDouble').removeAttr('disabled')
@@ -281,8 +283,14 @@ function animatePopcornKernel() {
 
   $('#popped-kernel')
     .show()
-    .animate({ left: `${randLeftPos}px`, top: `${randTopPos}px` }, 500, function() {
-      $(this).css({ left: '44%', top: '37%' }).hide()
+    .animate({
+      left: `${randLeftPos}px`,
+      top: `${randTopPos}px`
+    }, 500, function() {
+      $(this).css({
+        left: '44%',
+        top: '37%'
+      }).hide()
     })
 }
 
