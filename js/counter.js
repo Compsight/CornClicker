@@ -25,6 +25,19 @@ const PRICE = {
   }
 }
 
+let DOUBLE_POWER = false
+
+function enableDoublePower() {
+  const costForUpgrade = 1000
+
+  if (!DOUBLE_POWER && PLAYER.points >= costForUpgrade) {
+    PLAYER.points -= costForUpgrade
+    DOUBLE_POWER = true
+    $('#clickToDouble').attr({ disabled: "disabled" })
+      .text("DOUBLE POWER ACTIVATED")
+  }
+}
+
 const Timer = {
   reset: function() {
     clearInterval(this.id)
@@ -150,6 +163,10 @@ function addPointsDiv( amount, x, y ) {
 function earnPointsFromClick( event ) {
   let amount = 1 + PLAYER.teenagers*2
 
+  if (DOUBLE_POWER) {
+    amount *= 2
+  }
+
   addPointsDiv( amount, event.clientX - 50, event.clientY + 25 )
 
   PLAYER.points += amount
@@ -268,5 +285,6 @@ $(document).ready(function() {
   $('#buyTheaters').click(buyTheaters(1));
   $('#buyTenTheaters').click(buyTheaters(10));
   $('#buyHundredTheaters').click(buyTheaters(100));
+  $('#clickToDouble').click(enableDoublePower)
   $('#reset').click(resetGame)
 })
