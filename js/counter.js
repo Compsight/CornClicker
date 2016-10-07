@@ -6,6 +6,22 @@ const PRICE = {
   theaters: 250
 }
 
+const Timer = {
+  reset: function() {
+    clearInterval(this.id)
+    $('#fatherTime').text("0 Seconds")
+    this.start()
+  },
+
+  start: function() {
+    var start = new Date;
+
+    this.id = setInterval(function() {
+      $('#fatherTime').text(Math.floor((new Date - start) / 1000) + " Seconds");
+    }, 900);
+  }
+}
+
 function raiseTeenagerPrice(num) {
   for (var index = num; index > 0; index--){
     PRICE.teenagers *= 1.01;
@@ -42,6 +58,7 @@ function startGame() {
   PLAYER = new Player()
   PLAYER.load()
   setInterval(earnPointsPerSecond, 1000)
+  Timer.start()
   updateUI()
 }
 
@@ -86,9 +103,13 @@ class Player {
   }
 }
 
-function clearState() {
+function resetGame() {
   PLAYER.reset()
   PLAYER.clearStats()
+
+  Timer.reset()
+  // resetPrice()
+
   updateUI()
 }
 
@@ -218,15 +239,6 @@ function animatePopcornKernel() {
     })
 }
 
-var start = new Date;
-
-var theTime = setInterval(function() {
-    $('#fatherTime').text(Math.floor((new Date - start) / 1000) + " Seconds");
-}, 1);
-    if (theTime % 1000 === 0) {
-      earnPointsPerSecond()
-    }
-
 $(document).ready(function() {
   startGame()
   $('#corn-kernel').click(earnPointsFromClick);
@@ -240,5 +252,5 @@ $(document).ready(function() {
   $('#buyTheaters').click(buyTheaters(1));
   $('#buyTenTheaters').click(buyTheaters(10));
   $('#buyHundredTheaters').click(buyTheaters(100));
-  $('#reset').click(clearState)
+  $('#reset').click(resetGame)
 })
