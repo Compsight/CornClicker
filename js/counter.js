@@ -104,7 +104,7 @@ function addPointsDiv( amount, x, y ) {
   })
 
   $('body').append( textElement )
-  
+
   window.setTimeout( function() {
     textElement.remove()
   }, 1000 )
