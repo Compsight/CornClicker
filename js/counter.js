@@ -1,10 +1,14 @@
 var PLAYER;
 
 const PRICE = {
+  doublePower: false,
   teenagers: 20,
   kettles: 50,
   theaters: 250,
   reset: function() {
+    Cookies.remove("price")
+
+    this.doublePower = false
     this.teenagers = 20
     this.kettles = 50
     this.theaters = 250
@@ -18,6 +22,7 @@ const PRICE = {
     if (typeof priceJSON !== 'undefined') {
       const priceValues = JSON.parse(priceJSON)
 
+      this.doublePower = priceValues.doublePower
       this.teenagers = priceValues.teenagers
       this.kettles = priceValues.kettles
       this.theaters = priceValues.theaters
@@ -25,16 +30,14 @@ const PRICE = {
   }
 }
 
-let DOUBLE_POWER = false
-
 function enableDoublePower() {
   const costForUpgrade = 1000
 
-  if (!DOUBLE_POWER && PLAYER.points >= costForUpgrade) {
+  if (!PRICE.doublePower && PLAYER.points >= costForUpgrade) {
     PLAYER.points -= costForUpgrade
-    DOUBLE_POWER = true
-    $('#clickToDouble').attr({ disabled: "disabled" })
-      .text("DOUBLE POWER ACTIVATED")
+    PRICE.doublePower = true
+    PRICE.save()
+    updateDoublePowerButton()
   }
 }
 
@@ -163,7 +166,7 @@ function addPointsDiv( amount, x, y ) {
 function earnPointsFromClick( event ) {
   let amount = 1 + PLAYER.teenagers*2
 
-  if (DOUBLE_POWER) {
+  if (PRICE.doublePower) {
     amount *= 2
   }
 
@@ -247,6 +250,7 @@ function updateCPS() {
 function updateUI() {
   updatePlayerComponents(['points', 'teenagers', 'kettles', 'theaters', 'cps'])
   updatePriceComponents(['teenagers', 'kettles', 'theaters'])
+  updateDoublePowerButton()
 }
 
 function updatePlayerComponents(compNames) {
@@ -259,6 +263,16 @@ function updatePriceComponents(compNames) {
   compNames.forEach((compName) => {
     $('#' + compName + 'Price').text(PRICE[compName])
   })
+}
+
+function updateDoublePowerButton() {
+  if (PRICE.doublePower) {
+    $('#clickToDouble').attr({ disabled: "disabled" })
+      .text("DOUBLE POWER ACTIVATED")
+  } else {
+    $('#clickToDouble').removeAttr('disabled')
+      .text("DOUBLE POWER ($1000)")
+  }
 }
 
 function animatePopcornKernel() {
